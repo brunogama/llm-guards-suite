@@ -4,7 +4,7 @@ import Foundation
 @main
 struct APIGuardPlugin: CommandPlugin {
   func performCommand(context: PluginContext, arguments: [String]) throws {
-    let tool = try context.tool(named: "apiguard")
+    let tool = try context.tool(named: "APIGuardCLI")
     let toolURL = URL(fileURLWithPath: tool.url.path)
 
     // By default, use .apiguard.json at package root if present

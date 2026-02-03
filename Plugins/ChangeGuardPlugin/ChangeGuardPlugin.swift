@@ -4,7 +4,7 @@ import Foundation
 @main
 struct ChangeGuardPlugin: CommandPlugin {
   func performCommand(context: PluginContext, arguments: [String]) throws {
-    let tool = try context.tool(named: "changeguard")
+    let tool = try context.tool(named: "ChangeGuardCLI")
     let toolURL = URL(fileURLWithPath: tool.url.path)
 
     let configDefault = context.package.directoryURL.appendingPathComponent(".changeguard.json").path

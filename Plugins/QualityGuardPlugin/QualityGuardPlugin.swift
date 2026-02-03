@@ -4,7 +4,7 @@ import Foundation
 @main
 struct QualityGuardPlugin: CommandPlugin {
   func performCommand(context: PluginContext, arguments: [String]) throws {
-    let tool = try context.tool(named: "qualityguard")
+    let tool = try context.tool(named: "QualityGuardCLI")
     let toolURL = URL(fileURLWithPath: tool.url.path)
 
     let configDefault = context.package.directoryURL.appendingPathComponent(".qualityguard.json").path
