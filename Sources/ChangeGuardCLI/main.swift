@@ -73,7 +73,13 @@ enum ChangeGuard {
 
     let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
     let resolvedConfig = configPath ?? ".changeguard.json"
-    let cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    // Handle both absolute and relative paths
+    let cfgURL: URL
+    if resolvedConfig.hasPrefix("/") {
+      cfgURL = URL(fileURLWithPath: resolvedConfig)
+    } else {
+      cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    }
 
     guard FileManager.default.fileExists(atPath: cfgURL.path) else {
       throw CGError.configNotFound(cfgURL.path)

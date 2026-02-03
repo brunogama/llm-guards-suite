@@ -311,7 +311,13 @@ enum APIGuard {
 
     let resolvedConfig = configPath ?? ".apiguard.json"
     let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    let cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    // Handle both absolute and relative paths
+    let cfgURL: URL
+    if resolvedConfig.hasPrefix("/") {
+      cfgURL = URL(fileURLWithPath: resolvedConfig)
+    } else {
+      cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    }
 
     guard FileManager.default.fileExists(atPath: cfgURL.path) else {
       throw APIGuardError.configNotFound(cfgURL.path)

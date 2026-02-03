@@ -119,7 +119,13 @@ enum QualityGuard {
 
     let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
     let resolvedConfig = configPath ?? ".qualityguard.json"
-    let cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    // Handle both absolute and relative paths
+    let cfgURL: URL
+    if resolvedConfig.hasPrefix("/") {
+      cfgURL = URL(fileURLWithPath: resolvedConfig)
+    } else {
+      cfgURL = cwd.appendingPathComponent(resolvedConfig)
+    }
 
     guard FileManager.default.fileExists(atPath: cfgURL.path) else {
       throw QGError.configNotFound(cfgURL.path)
