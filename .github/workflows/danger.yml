@@ -1,0 +1,26 @@
+name: danger
+
+on:
+  pull_request:
+
+jobs:
+  danger:
+    runs-on: macos-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install danger-swift
+        run: |
+          brew update
+          brew install danger/tap/danger-swift
+
+      - name: Run Danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          danger-swift ci

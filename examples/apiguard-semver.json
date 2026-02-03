@@ -1,0 +1,7 @@
+{
+  "targets": ["MyPublicLibrary"],
+  "mode": "semver",
+  "baselineDir": "api-baseline",
+  "outputDir": ".build/apiguard",
+  "failOnAdditions": false
+}

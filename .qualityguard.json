@@ -1,0 +1,15 @@
+{
+  "range": "origin/main...HEAD",
+  "testsPathspec": "Tests/**",
+  "maxDeletedTestFiles": 0,
+  "maxDeletedTestLines": 0,
+  "maxDeletedTestFuncs": 0,
+  "allowEnvVar": "ALLOW_TEST_DELETIONS",
+  "coverage": {
+    "enabled": false,
+    "baselineFile": "coverage-baseline.txt",
+    "minAbsolute": 0.0,
+    "maxDrop": 0.0,
+    "command": "echo 0.0"
+  }
+}

@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog for version
+        id: changelog
+        run: |
+          # Extract the changelog section for this version
+          VERSION="${{ steps.version.outputs.VERSION }}"
+
+          # Get content between this version header and the next version header
+          CHANGELOG=$(awk -v ver="$VERSION" '
+            /^## \[/ {
+              if (found) exit
+              if ($0 ~ "\\[" ver "\\]") found=1
+              next
+            }
+            found {print}
+          ' CHANGELOG.md)
+
+          # Escape for GitHub Actions
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.version.outputs.VERSION }}
+          body: ${{ steps.changelog.outputs.CHANGELOG }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, '-') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-changelog:
+    name: Update Changelog Links
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update changelog links
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          REPO_URL="https://github.com/${{ github.repository }}"
+
+          # Add comparison link at bottom if not exists
+          if ! grep -q "\[$VERSION\]:" CHANGELOG.md; then
+            echo "" >> CHANGELOG.md
+            echo "[$VERSION]: $REPO_URL/releases/tag/v$VERSION" >> CHANGELOG.md
+          fi
+
+      - name: Commit changelog updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet CHANGELOG.md; then
+            echo "No changelog updates needed"
+          else
+            git add CHANGELOG.md
+            git commit -m "docs: update changelog links for v${{ steps.version.outputs.VERSION }}"
+            git push
+          fi

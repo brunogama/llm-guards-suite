@@ -1,0 +1,7 @@
+{
+  "targets": ["MyPublicLibrary"],
+  "mode": "strict",
+  "baselineDir": "api-baseline",
+  "outputDir": ".build/apiguard",
+  "failOnAdditions": true
+}

@@ -1,0 +1,15 @@
+{
+  "range": "origin/main...HEAD",
+  "testsPathspec": "Tests/**",
+  "maxDeletedTestFiles": 0,
+  "maxDeletedTestLines": 0,
+  "maxDeletedTestFuncs": 0,
+  "allowEnvVar": "ALLOW_TEST_DELETIONS",
+  "coverage": {
+    "enabled": true,
+    "baselineFile": "coverage-baseline.txt",
+    "minAbsolute": 80.0,
+    "maxDrop": 2.0,
+    "command": "xcrun llvm-cov report .build/debug/YourPackagePackageTests.xctest/Contents/MacOS/YourPackagePackageTests --instr-profile .build/debug/codecov/default.profdata | tail -1 | awk '{print $4}' | tr -d '%'"
+  }
+}

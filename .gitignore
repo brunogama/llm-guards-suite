@@ -1,0 +1,38 @@
+# Swift Build
+.build/
+.swiftpm/
+DerivedData/
+*.xcodeproj
+*.xcworkspace
+Package.resolved
+
+# Xcode
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+*.o
+*.a
+*.dylib
+
+# Test artifacts
+.build/debug/codecov/
+
+# Environment
+.env
+.env.local

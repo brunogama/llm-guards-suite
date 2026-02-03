@@ -1,0 +1,48 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Initial release preparation
+
+## [0.0.0] - 2026-02-03
+
+### Added
+- **QualityGuard**: Test deletion prevention tool
+  - XCTest function detection (`func testSomething()`)
+  - Swift Testing support (`@Test`, `@Suite`)
+  - Coverage drop detection (optional)
+  - Configurable thresholds
+  - Environment variable bypass
+- **ChangeGuard**: Diff size enforcement tool
+  - File count limits
+  - Line count limits
+  - Whitespace ratio detection (formatter storm prevention)
+  - Configurable pathspecs
+- **APIGuard**: Public API stability tool
+  - Symbol graph diffing
+  - Semver mode (breaking changes only)
+  - Strict mode (any API changes)
+  - Baseline snapshot management
+- SwiftPM command plugins for all three tools
+- CLI executables with `--help` support
+- Process timeout handling (60s default)
+- Separate stdout/stderr forwarding
+- Unit tests for test pattern detection
+- Example configuration files
+- GitHub Actions CI workflow
+- Pre-commit hook scripts
+- Comprehensive documentation
+
+### Infrastructure
+- Swift 6.0 support
+- macOS 13.0+ platform requirement
+- MIT License
+
+[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.0...HEAD
+[0.0.0]: https://github.com/brunogama/llm-guards-suite/releases/tag/v0.0.0

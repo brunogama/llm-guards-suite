@@ -1,0 +1,35 @@
+name: guards
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  guard:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select base range
+        id: range
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "RANGE=origin/${{ github.base_ref }}...HEAD" >> $GITHUB_OUTPUT
+          else
+            echo "RANGE=origin/main...HEAD" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ChangeGuard (minimal diff)
+        run: |
+          swift package change-guard -- --config .changeguard.json --range "${{ steps.range.outputs.RANGE }}"
+
+      - name: QualityGuard (test deletion / coverage)
+        run: |
+          swift package quality-guard -- --config .qualityguard.json --range "${{ steps.range.outputs.RANGE }}"
+
+      - name: APIGuard (public API baseline)
+        run: |
+          swift package api-guard -- --config .apiguard.json

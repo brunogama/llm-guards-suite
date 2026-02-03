@@ -1,0 +1,8 @@
+{
+  "range": "origin/main...HEAD",
+  "pathspecs": ["Sources/**", "Tests/**", "Package.swift"],
+  "maxFilesChanged": 5,
+  "maxTotalChangedLines": 200,
+  "maxWhitespaceRatio": 0.2,
+  "allowEnvVar": "ALLOW_LARGE_DIFF"
+}

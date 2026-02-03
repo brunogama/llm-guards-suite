@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+env:
+  SWIFT_VERSION: '6.0'
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: ${{ env.SWIFT_VERSION }}
+
+      - name: Cache Swift Build
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-swift-${{ hashFiles('Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-
+
+      - name: Build
+        run: swift build -Xswiftc -warnings-as-errors
+
+      - name: Test
+        run: swift test
+
+  guards:
+    name: Run Guards
+    runs-on: macos-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: ${{ env.SWIFT_VERSION }}
+
+      - name: Cache Swift Build
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-swift-${{ hashFiles('Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-
+
+      - name: Select base range
+        id: range
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "RANGE=origin/${{ github.base_ref }}...HEAD" >> $GITHUB_OUTPUT
+          else
+            echo "RANGE=origin/main...HEAD" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ChangeGuard (minimal diff)
+        run: |
+          swift package change-guard -- --config .changeguard.json --range "${{ steps.range.outputs.RANGE }}"
+
+      - name: QualityGuard (test deletion / coverage)
+        run: |
+          swift package quality-guard -- --config .qualityguard.json --range "${{ steps.range.outputs.RANGE }}"
+
+      - name: APIGuard (public API baseline)
+        run: |
+          swift package api-guard -- --config .apiguard.json
+
+  changelog:
+    name: Changelog Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check CHANGELOG updated
+        run: |
+          if ! git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q "CHANGELOG.md"; then
+            echo "::warning::CHANGELOG.md was not updated in this PR"
+            echo "Consider adding an entry under [Unreleased] if this PR includes user-facing changes"
+          else
+            echo "CHANGELOG.md was updated"
+          fi
