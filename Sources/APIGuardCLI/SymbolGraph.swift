@@ -99,17 +99,29 @@ enum SwiftPM {
   static func dumpSymbolGraph(target: String, outputDir: URL) throws -> URL {
     try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
 
+    // Swift 6.0 swift package dump-symbol-graph doesn't support --target or --output-dir
+    // It outputs to .build/symbol-graphs/ by default
     let (status, stdout, stderr) = try run([
-      "swift", "package", "dump-symbol-graph",
-      "--target", target,
-      "--output-dir", outputDir.path
+      "swift", "package", "dump-symbol-graph"
     ])
 
     guard status == 0 else { throw APIGuardError.swiftToolFailed(status, stdout + stderr) }
 
-    // SwiftPM produces one or more *.symbols.json files. Prefer the newest.
-    let files = try FileManager.default.contentsOfDirectory(at: outputDir, includingPropertiesForKeys: [.contentModificationDateKey])
-      .filter { $0.lastPathComponent.hasSuffix(".symbols.json") }
+    // Symbol graphs are output to .build/symbol-graphs/ with names like:
+    // TargetName.symbols.json or TargetName@swift-x.x-platform.symbols.json
+    let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+    let symbolGraphsDir = cwd.appendingPathComponent(".build/symbol-graphs")
+
+    guard FileManager.default.fileExists(atPath: symbolGraphsDir.path) else {
+      throw APIGuardError.swiftToolFailed(status, "Symbol graphs directory not found at .build/symbol-graphs/")
+    }
+
+    let files = try FileManager.default.contentsOfDirectory(at: symbolGraphsDir, includingPropertiesForKeys: [.contentModificationDateKey])
+      .filter { url in
+        let name = url.lastPathComponent
+        // Match TargetName.symbols.json or TargetName@swift-x.x-platform.symbols.json
+        return name.hasSuffix(".symbols.json") && (name.hasPrefix("\(target).") || name.hasPrefix("\(target)@"))
+      }
 
     guard let newest = files.sorted(by: { (a, b) in
       let da = (try? a.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
@@ -119,7 +131,12 @@ enum SwiftPM {
       throw APIGuardError.swiftToolFailed(status, "No .symbols.json produced for target \(target)")
     }
 
-    return newest
+    // Copy the symbol graph to our output directory for consistency
+    let destURL = outputDir.appendingPathComponent("\(target).symbols.json")
+    try? FileManager.default.removeItem(at: destURL)
+    try FileManager.default.copyItem(at: newest, to: destURL)
+
+    return destURL
   }
 
   /// Runs an external process with separate stdout/stderr capture.
