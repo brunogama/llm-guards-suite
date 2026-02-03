@@ -101,9 +101,10 @@ enum SwiftPM {
 
     // Swift 6.0 swift package dump-symbol-graph doesn't support --target or --output-dir
     // It outputs to .build/symbol-graphs/ by default
+    // Use longer timeout (600s) for large projects
     let (status, stdout, stderr) = try run([
       "swift", "package", "dump-symbol-graph"
-    ])
+    ], timeout: 600.0)
 
     guard status == 0 else { throw APIGuardError.swiftToolFailed(status, stdout + stderr) }
 

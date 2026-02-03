@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-02-03
+
+### Fixed
+- APIGuard symbol graph generation timeout increased from 120s to 600s
+  - Large projects require more time for initial symbol graph generation
+
 ## [0.0.5] - 2026-02-03
 
 ### Fixed
@@ -77,7 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - macOS 13.0+ platform requirement
 - MIT License
 
-[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.2...v0.0.3
