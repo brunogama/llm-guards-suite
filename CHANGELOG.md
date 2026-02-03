@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Initial release preparation
+## [0.0.1] - 2026-02-03
+
+### Fixed
+- Plugin tool lookup now uses target names (`APIGuardCLI`, `QualityGuardCLI`, `ChangeGuardCLI`)
+  instead of product names, fixing plugin usage when consumed as a dependency package
 
 ## [0.0.0] - 2026-02-03
 
@@ -44,5 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - macOS 13.0+ platform requirement
 - MIT License
 
-[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.0...HEAD
+[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.0...v0.0.1
 [0.0.0]: https://github.com/brunogama/llm-guards-suite/releases/tag/v0.0.0
