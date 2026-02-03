@@ -168,14 +168,14 @@ Edit the configuration files for your specific needs:
 swift build
 
 # Initialize API baseline
-swift run apiguard --update
+swift run APIGuardCLI --update
 git add api-baseline/
 git commit -m "Add API baseline"
 
 # Test all guards
-swift run qualityguard
-swift run changeguard
-swift run apiguard
+swift run QualityGuardCLI
+swift run ChangeGuardCLI
+swift run APIGuardCLI
 ```
 
 ## Customization

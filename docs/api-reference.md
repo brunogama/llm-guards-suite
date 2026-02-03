@@ -30,7 +30,7 @@ Complete configuration reference for all LLM Guards Suite tools.
 
 ```bash
 # Using swift run
-swift run qualityguard [OPTIONS]
+swift run QualityGuardCLI [OPTIONS]
 
 # Using swift package plugin
 swift package quality-guard [-- OPTIONS]
@@ -99,7 +99,7 @@ Standard git pathspec syntax is supported:
 
 ```bash
 # Using swift run
-swift run changeguard [OPTIONS]
+swift run ChangeGuardCLI [OPTIONS]
 
 # Using swift package plugin
 swift package change-guard [-- OPTIONS]
@@ -149,7 +149,7 @@ swift package change-guard [-- OPTIONS]
 
 ```bash
 # Using swift run
-swift run apiguard [OPTIONS]
+swift run APIGuardCLI [OPTIONS]
 
 # Using swift package plugin
 swift package api-guard [-- OPTIONS]

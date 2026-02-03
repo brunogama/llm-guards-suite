@@ -219,7 +219,7 @@ Create separate configs for different environments:
 # .qualityguard.dev.json - lenient for development
 
 # Run with specific config
-swift run qualityguard --config .qualityguard.dev.json
+swift run QualityGuardCLI --config .qualityguard.dev.json
 ```
 
 ### Config Per Branch
@@ -249,9 +249,9 @@ Test your configuration before committing:
 cat .qualityguard.json | python3 -m json.tool
 
 # Test with dry run
-swift run qualityguard --help
-swift run qualityguard  # Check output
+swift run QualityGuardCLI --help
+swift run QualityGuardCLI  # Check output
 
 # Test bypass
-ALLOW_TEST_DELETIONS=1 swift run qualityguard
+ALLOW_TEST_DELETIONS=1 swift run QualityGuardCLI
 ```

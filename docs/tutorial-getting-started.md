@@ -86,7 +86,7 @@ Replace `YourLibraryTarget` with your actual public library target name.
 For APIGuard to work, you need to create an initial baseline:
 
 ```bash
-swift run apiguard --update
+swift run APIGuardCLI --update
 git add api-baseline/
 git commit -m "Add API baseline"
 ```
@@ -97,16 +97,16 @@ Run each guard to verify they work:
 
 ```bash
 # Test QualityGuard
-swift run qualityguard --help
-swift run qualityguard
+swift run QualityGuardCLI --help
+swift run QualityGuardCLI
 
 # Test ChangeGuard
-swift run changeguard --help
-swift run changeguard
+swift run ChangeGuardCLI --help
+swift run ChangeGuardCLI
 
 # Test APIGuard
-swift run apiguard --help
-swift run apiguard
+swift run APIGuardCLI --help
+swift run APIGuardCLI
 ```
 
 ## Step 5: Add to CI

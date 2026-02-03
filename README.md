@@ -87,9 +87,9 @@ swift package change-guard
 swift package api-guard
 
 # Or run CLIs directly
-swift run qualityguard --help
-swift run changeguard --help
-swift run apiguard --help
+swift run QualityGuardCLI --help
+swift run ChangeGuardCLI --help
+swift run APIGuardCLI --help
 ```
 
 ### 3. Add to CI
@@ -204,13 +204,13 @@ Prevents breaking changes to public APIs using symbol graph diffing.
 **Workflow:**
 ```bash
 # First time: create baseline
-swift run apiguard --update
+swift run APIGuardCLI --update
 
 # CI: check against baseline
-swift run apiguard
+swift run APIGuardCLI
 
 # After intentional API change
-swift run apiguard --update
+swift run APIGuardCLI --update
 git add api-baseline/
 git commit -m "Update API baseline"
 ```
@@ -233,14 +233,14 @@ repos:
     hooks:
       - id: quality-guard
         name: QualityGuard
-        entry: swift run qualityguard
+        entry: swift run QualityGuardCLI
         language: system
         pass_filenames: false
         stages: [pre-push]
 
       - id: change-guard
         name: ChangeGuard
-        entry: swift run changeguard
+        entry: swift run ChangeGuardCLI
         language: system
         pass_filenames: false
         stages: [pre-push]

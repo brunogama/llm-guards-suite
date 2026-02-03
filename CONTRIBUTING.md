@@ -24,7 +24,7 @@ swift build
 swift test
 
 # Run a specific guard
-swift run qualityguard --help
+swift run QualityGuardCLI --help
 ```
 
 ## Code Style
@@ -58,9 +58,9 @@ swift-format -i Sources/**/*.swift
 
 2. **Test your changes locally:**
    ```bash
-   swift run qualityguard
-   swift run changeguard
-   swift run apiguard
+   swift run QualityGuardCLI
+   swift run ChangeGuardCLI
+   swift run APIGuardCLI
    ```
 
 3. **Update documentation** if you changed behavior

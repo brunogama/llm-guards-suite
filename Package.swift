@@ -7,10 +7,10 @@ let package = Package(
   name: "llm-guards-suite",
   platforms: [.macOS(.v13)],
   products: [
-    // CLI Executables
-    .executable(name: "apiguard", targets: ["APIGuardCLI"]),
-    .executable(name: "qualityguard", targets: ["QualityGuardCLI"]),
-    .executable(name: "changeguard", targets: ["ChangeGuardCLI"]),
+    // CLI Executables (product name must match target name for plugin tool lookup)
+    .executable(name: "APIGuardCLI", targets: ["APIGuardCLI"]),
+    .executable(name: "QualityGuardCLI", targets: ["QualityGuardCLI"]),
+    .executable(name: "ChangeGuardCLI", targets: ["ChangeGuardCLI"]),
     // SwiftPM Plugins
     .plugin(name: "APIGuardPlugin", targets: ["APIGuardPlugin"]),
     .plugin(name: "QualityGuardPlugin", targets: ["QualityGuardPlugin"]),
