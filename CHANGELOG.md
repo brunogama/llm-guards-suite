@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-02-03
+
+### Fixed
+- Plugins now use current working directory instead of `context.package.directoryURL`
+  - This fixes config file lookup when using guards as a dependency package
+  - Previously plugins looked for config in the dependency's directory, not the consumer's
+
 ## [0.0.2] - 2026-02-03
 
 ### Fixed
@@ -54,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - macOS 13.0+ platform requirement
 - MIT License
 
-[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/brunogama/llm-guards-suite/compare/v0.0.0...v0.0.1
 [0.0.0]: https://github.com/brunogama/llm-guards-suite/releases/tag/v0.0.0

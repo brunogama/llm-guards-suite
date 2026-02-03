@@ -7,7 +7,11 @@ struct ChangeGuardPlugin: CommandPlugin {
     let tool = try context.tool(named: "ChangeGuardCLI")
     let toolURL = URL(fileURLWithPath: tool.url.path)
 
-    let configDefault = context.package.directoryURL.appendingPathComponent(".changeguard.json").path
+    // Use current working directory (where swift package was invoked)
+    // not context.package.directoryURL (which points to the plugin's package)
+    let workingDir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+    let configDefault = workingDir.appendingPathComponent(".changeguard.json").path
+
     var args = arguments
     if !args.contains("--config") {
       args.append("--config")
@@ -17,7 +21,7 @@ struct ChangeGuardPlugin: CommandPlugin {
     let process = Process()
     process.executableURL = toolURL
     process.arguments = args
-    process.currentDirectoryURL = context.package.directoryURL
+    process.currentDirectoryURL = workingDir
     try process.run()
     process.waitUntilExit()
 
